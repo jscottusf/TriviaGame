@@ -15,6 +15,24 @@ body {
     min-height: 500px;
 }
 
+#title {
+    align-items: center;
+}
+
+.choice {
+    cursor: pointer;
+    width: 300px;
+    text-align: left;
+    margin-left: 220px;
+    padding: 5px;
+}
+
+.choice:hover {
+    border-radius: 25px;
+    border: 1px solid rgb(95, 94, 94);
+    
+  }
+
 .push {
     margin: 50px;
     height: 50px;

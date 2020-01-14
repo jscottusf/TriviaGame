@@ -1,69 +1,68 @@
 window.onload = function() {
-    $("#game-window").html('<button type="button" class="begin btn btn-dark">Begin</button>')
+    var startButton = $('<button type="button" class="begin btn btn-dark">Begin</button>')
+    $("#game-window").append('<button type="button" class="begin btn btn-dark">Begin</button>')
 };
 $(document).ready(function() {
-    //variables
-    let questions = ["1", "2"];
-    let questionFacts = {
-        "1" : { 
-            number : "1.",
-            question : "Do you like cats?",
-            a : "yes",
-            b : "no",
-            c : "maybe",
-            d : "yes, but I prefer dogs",
-            answer: "d"
-        },
-        "2" : { 
-            number : "2.",
-            question : "Do you like dogs?",
-            a : "yes",
-            b : "no",
-            c : "maybe",
-            d : "yes, but I prefer cats",
-            answer: "a"
-        }
-    };
-    let questionNumber = 0;
+    let questions = [
+        {number: 1, q: "Do you like cats?",  a : "yes", b : "no", c : "maybe", d : "yes, but I prefer dogs", answer: "d"},
+        {number: 2, q: "Do you like dogs?",  a : "yes", b : "no", c : "maybe", d : "yes, but I prefer cats", answer: "a"}
+    ];
+    let questionNumber;
     let showQuestion;
     let count;
+    let intervalId;
 
     console.log(questions[0]);
-    console.log(questionFacts[questions[0]].question);
-    console.log(questionFacts[questions[0]].answer);
+    console.log(questions[0].q);
+    console.log(questions[0].answer);
 
     function initializeGame() {
         questionNumber = 0;
+        count = 30;
+        run();
     }
 
-    // function displayQuestion() {
-    //     var qDiv = $("<div class='" + questionFacts[questions[questionNumber]].question) + "'>");~
-    //     var aDiv = $("<p>a. ' + questionFacts[questions[questionNumber]].question.a + '</p>"');
-    //     var bDiv = $()
-    //     var cDiv = $()~
-    //     var dDiv = $()
-        
-    //     $("#game-window").append('"<p>b. "' + questionFacts[questions[questionNumber]].question.b) + '"</p>"');
-    //     $("#game-window").append('"<p>c. "' + questionFacts[questions[questionNumber]].question.c) + '"</p>"');
-    //     $("#game-window").append('"<p>d. "' + questionFacts[questions[questionNumber]].question.d) + '"</p>"');~
-    //   }
+    function displayQuestion() {
+        var cardDiv = $('<div class="cardDiv">')
+        $("#game-window").append(cardDiv);
+        var qDiv = $('<div class="question">' + questions[questionNumber].q + '</div>');
+        var aDiv = $('<div class="choice" id="a">a. ' + questions[questionNumber].a + '</div>');
+        var bDiv = $('<div class="choice" id="b">b. ' + questions[questionNumber].b + '</div>');
+        var cDiv = $('<div class="choice" id="c">c. ' + questions[questionNumber].c + '</div>');
+        var dDiv = $('<div class="choice" id="d">d. ' + questions[questionNumber].d + '</div>');
+        var timeDiv = $('<div id="time">Time Remaining: ' + count + ' seconds</div>');
+        $(".cardDiv").append(qDiv, aDiv, bDiv, cDiv, dDiv, timeDiv);
+    }
 
-    // function renderQuestion() {
-    //     let questionDiv = $("<div>"+  + "</div>")
-    // }
+    function clearBoard() {
+            $(".choice").on("click", function() {
+                $(".cardDiv").remove();
+            });
+    }
+
+    function run() {
+        clearInterval(intervalId);
+        intervalId = setInterval(decrement, 1000);
+      }
+
+    function decrement() {
+        count--;
+        $("#time").html('<div id="time">Time Remaining: ' + count + ' seconds</div>');
+        if (count === 0) {
+            stop();
+        }
+    }
+
+    function stop() {
+        clearInterval(intervalId);
+      }
 
     $(".begin").on("click", function() {
         $(this).remove();
+        initializeGame();
         displayQuestion();
+        clearBoard();
     });
 
     
-
-
-    
-
-
-
-
-
 });
