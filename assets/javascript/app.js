@@ -4,13 +4,13 @@ window.onload = function() {
 };
 $(document).ready(function() {
     let questions = [
-        {number: 1, q: "Do you like cats?",  a : "yes", b : "no", c : "maybe", d : "yes, but I prefer dogs", answer: "d"},
-        {number: 2, q: "Do you like dogs?",  a : "yes", b : "no", c : "maybe", d : "yes, but I prefer cats", answer: "a"}
+        {number: 1, q: "Do you like cats?",  a: "yes", b: "no", c: "maybe", d: "yes, but I prefer dogs", answer: "yes, but I prefer dogs", image: "./assets/images/js.png"},
+        {number: 2, q: "Do you like dogs?",  a: "yes", b: "no", c: "maybe", d: "yes, but I prefer cats", answer: "yes", image: "./assets/images/js.png"}
     ];
     let questionNumber;
-    let showQuestion;
     let count;
     let intervalId;
+    let feedback;
 
     console.log(questions[0]);
     console.log(questions[0].q);
@@ -18,12 +18,13 @@ $(document).ready(function() {
 
     function initializeGame() {
         questionNumber = 0;
-        count = 30;
         run();
     }
 
     function displayQuestion() {
-        var cardDiv = $('<div class="cardDiv">')
+        isQuestion = true;
+        count = 30;
+        var cardDiv = $('<div class="cardDiv">');
         $("#game-window").append(cardDiv);
         var qDiv = $('<div class="question">' + questions[questionNumber].q + '</div>');
         var aDiv = $('<div class="choice" id="a">a. ' + questions[questionNumber].a + '</div>');
@@ -34,10 +35,23 @@ $(document).ready(function() {
         $(".cardDiv").append(qDiv, aDiv, bDiv, cDiv, dDiv, timeDiv);
     }
 
+    function displayFeedback() {
+        isQuestion = false;
+        count = 5;
+        feedback = "Correct! The answer is " + questions[questionNumber].answer;
+        var cardDiv = $('<div class="cardDiv">');
+        $("#game-window").append(cardDiv);
+        var feedbackDiv = $('<div>' + feedback + '</div>');
+        var imageDiv = $('<img src="' + questions[questionNumber].image + '" width="200px">');
+        var timeDiv = $('<div id="time">Next question in... ' + count + ' seconds</div>');
+        $(".cardDiv").append(feedbackDiv, imageDiv, timeDiv);
+    }
+
     function clearBoard() {
-            $(".choice").on("click", function() {
-                $(".cardDiv").remove();
-            });
+        $(".choice").on("click", function() {
+            $(".cardDiv").remove();
+            displayFeedback();
+        });
     }
 
     function run() {
