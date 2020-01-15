@@ -1,14 +1,17 @@
 window.onload = function() {
     var startButton = $('<button type="button" class="begin btn btn-dark">Begin</button>')
-    $("#game-window").append('<button type="button" class="begin btn btn-dark">Begin</button>')
+    $("#game-window").append(startButton);
 };
 $(document).ready(function() {
     let questions = [
         {number: 1, q: "Do you like cats?",  a: "yes", b: "no", c: "maybe", d: "yes, but I prefer dogs", answer: "yes, but I prefer dogs", image: "./assets/images/js.png"},
-        {number: 2, q: "Do you like dogs?",  a: "yes", b: "no", c: "maybe", d: "yes, but I prefer cats", answer: "yes", image: "./assets/images/js.png"}
+        {number: 2, q: "Do you like dogs?",  a: "yes", b: "no", c: "maybe", d: "yes, but I prefer cats", answer: "yes", image: "./assets/images/js.png"},
+        {number: 3, q: "Do you like hamsters?",  a: "yes", b: "no", c: "maybe", d: "yes, but I prefer mice", answer: "maybe", image: "./assets/images/js.png"}
     ];
     let questionNumber;
     let count;
+    let timeRemaing = 10;
+    let timeFeedback = 5;
     let intervalId;
     let feedback;
     var isQuestion;
@@ -19,12 +22,11 @@ $(document).ready(function() {
 
     function initializeGame() {
         questionNumber = 0;
-        run();
     }
 
     function displayQuestion() {
+        runT();
         isQuestion = true;
-        count = 30;
         var cardDiv = $('<div class="cardDiv">');
         $("#game-window").append(cardDiv);
         var qDiv = $('<div class="question">' + questions[questionNumber].q + '</div>');
@@ -32,19 +34,19 @@ $(document).ready(function() {
         var bDiv = $('<div class="choice" id="b">b. ' + questions[questionNumber].b + '</div>');
         var cDiv = $('<div class="choice" id="c">c. ' + questions[questionNumber].c + '</div>');
         var dDiv = $('<div class="choice" id="d">d. ' + questions[questionNumber].d + '</div>');
-        var timeDiv = $('<div id="time">Time Remaining: ' + count + ' seconds</div>');
+        var timeDiv = $('<div id="time">Time Remaining: 10 seconds</div>');
         $(".cardDiv").append(qDiv, aDiv, bDiv, cDiv, dDiv, timeDiv);
     }
 
     function displayFeedback() {
+        runF();
         isQuestion = false;
-        count = 5;
         feedback = "Correct! The answer is " + questions[questionNumber].answer;
         var cardDiv = $('<div class="cardDiv">');
         $("#game-window").append(cardDiv);
         var feedbackDiv = $('<div>' + feedback + '</div>');
         var imageDiv = $('<img src="' + questions[questionNumber].image + '" width="200px">');
-        var timeDiv = $('<div id="time">Next question in... ' + count + ' seconds</div>');
+        var timeDiv = $('<div id="time">Next question in... 5 seconds</div>');
         $(".cardDiv").append(feedbackDiv, imageDiv, timeDiv);
     }
 
@@ -55,24 +57,29 @@ $(document).ready(function() {
         });
     }
 
-    function run() {
+    function runT() {
         clearInterval(intervalId);
-        intervalId = setInterval(decrement, 1000);
+        intervalId = setInterval(decRemainingTime, 1000);
       }
 
-    function decrement() {
-        count--;
-        $("#time").html('<div id="time">Time Remaining: ' + count + ' seconds</div>');
-        if ((count === 0) && (isQuestion = true)) {
+    function runF() {
+        clearInterval(intervalId);
+        intervalId = setInterval(decTimeFeedback, 1000);
+    }
+
+    function decRemainingTime() {
+        timeRemaing--;
+        $("#time").html('<div id="time">Time Remaining: ' + timeRemaing + ' seconds</div>');
+        if (timeRemaing === 0) {
             stop();
-            $(".cardDiv").remove();
-            displayFeedback();
         }
-        else if ((count === 0) && (isQuestion = false)) {
+    }
+
+    function decTimeFeedback() {
+        timeFeedback--
+        $("#time").html('<div id="time">Next question in... ' + timeFeedback + ' seconds</div>');
+        if (timeFeedback === 0) {
             stop();
-            questionNumber++;
-            $(".cardDiv").remove();
-            displayQuestion();
         }
     }
 
