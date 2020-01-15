@@ -11,6 +11,7 @@ $(document).ready(function() {
     let count;
     let intervalId;
     let feedback;
+    var isQuestion;
 
     console.log(questions[0]);
     console.log(questions[0].q);
@@ -47,7 +48,7 @@ $(document).ready(function() {
         $(".cardDiv").append(feedbackDiv, imageDiv, timeDiv);
     }
 
-    function clearBoard() {
+    function answerSelected() {
         $(".choice").on("click", function() {
             $(".cardDiv").remove();
             displayFeedback();
@@ -62,8 +63,16 @@ $(document).ready(function() {
     function decrement() {
         count--;
         $("#time").html('<div id="time">Time Remaining: ' + count + ' seconds</div>');
-        if (count === 0) {
+        if ((count === 0) && (isQuestion = true)) {
             stop();
+            $(".cardDiv").remove();
+            displayFeedback();
+        }
+        else if ((count === 0) && (isQuestion = false)) {
+            stop();
+            questionNumber++;
+            $(".cardDiv").remove();
+            displayQuestion();
         }
     }
 
@@ -75,7 +84,7 @@ $(document).ready(function() {
         $(this).remove();
         initializeGame();
         displayQuestion();
-        clearBoard();
+        answerSelected();
     });
 
     
