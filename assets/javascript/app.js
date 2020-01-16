@@ -16,11 +16,15 @@ $(document).ready(function() {
     let intervalId;
     let feedback;
     let answerKey;
+    let totalCorrect;
+    let totalIncorrect;
 
     function initializeGame() {
         questionNumber = 0;
         timeRemaing = 10;
         timeFeedback = 5;
+        totalCorrect = 0;
+        totalIncorrect = 0;
     }
 
     function displayQuestion() {
@@ -37,7 +41,6 @@ $(document).ready(function() {
         var timeDiv = $('<div id="time">Time Remaining: 10 seconds</div>');
         $(".cardDiv").append(qDiv, aDiv, bDiv, cDiv, dDiv, timeDiv);
         answerSelected();
-        timeLimit();
     }
 
     function displayFeedback() {
@@ -51,35 +54,51 @@ $(document).ready(function() {
         var imageDiv = $('<img src="' + questions[questionNumber].image + '" width="200px">');
         var timeDiv = $('<div id="time">Next question in... 5 seconds</div>');
         $(".cardDiv").append(feedbackDiv, imageDiv, timeDiv);
-        //setTimeout(nextQuestion, 5000);
+    }
+
+    function displayGameOver() {
+        resetScreen();
+        var cardDiv = $('<div class="cardDiv">');
+        $("#game-window").append(cardDiv);
+        var restartButton = $('<button type="Try again" class="restart btn btn-dark">Begin</button>')
+        var gameOverDiv = $('<h1>GAME OVER</h1>');
+        var totalCorrectDiv = $('<h2> Total correct: ' + totalCorrect + '</h2>')
+        var totalIncorrectDiv = $('<h2> Total correct: ' + totalIncorrect + '</h2>');
+        $(".cardDiv").append(gameOverDiv, totalCorrectDiv, totalIncorrectDiv, restartButton);
+        $(".restart").on("click", function() {
+            resetScreen();
+            initializeGame();
+            displayQuestion();
+        });
     }
 
     function nextQuestion() {
         questionNumber++;
-        timeRemaing = 10;
-        timeFeedback = 5;
-        userGuess = "";
-        displayQuestion();
+        if (questionNumber === questions.length) {
+            displayGameOver();
+        }
+        else {
+            timeRemaing = 10;
+            timeFeedback = 5;
+            userGuess = "";
+            displayQuestion();
+        }
+        
     }
-
-    function timeLimit() {
-        checkAnswer();
-    }
-
-    
 
     function answerSelected() {
         $(".choice").on("click", function() {
             userGuess = $(this).attr("id");
             if (userGuess===answerKey) {
                 feedback = "Correct! The answer is " + questions[questionNumber].answer;
+                totalCorrect++;
             }
             else {
                 feedback = "Nope! The answer was " + questions[questionNumber].answer;
+                totalIncorrect++;
             }
             resetScreen();
             displayFeedback();
-            checkAnswer();
         });
     }
 
@@ -97,8 +116,9 @@ $(document).ready(function() {
         timeRemaing--;
         $("#time").html('<div id="time">Time Remaining: ' + timeRemaing + ' seconds</div>');
         if (timeRemaing === 0) {
-        feedback = "You didn't respond in time...the answer was " + questions[questionNumber].answer;
-        stop();
+            feedback = "You didn't respond in time...the answer was " + questions[questionNumber].answer;
+            totalIncorrect++;
+            stop();
             resetScreen();
             displayFeedback();
         }
