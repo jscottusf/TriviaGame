@@ -14,6 +14,7 @@ $(document).ready(function() {
     let timeFeedback;
     let intervalId;
     let feedback;
+    let answerKey;
     //userGuess = undefined;????
 
     function initializeGame() {
@@ -32,6 +33,7 @@ $(document).ready(function() {
         var bDiv = $('<div class="choice" id="b">b. ' + questions[questionNumber].b + '</div>');
         var cDiv = $('<div class="choice" id="c">c. ' + questions[questionNumber].c + '</div>');
         var dDiv = $('<div class="choice" id="d">d. ' + questions[questionNumber].d + '</div>');
+        answerKey = questions[questionNumber].ansChar;
         var timeDiv = $('<div id="time">Time Remaining: 10 seconds</div>');
         $(".cardDiv").append(qDiv, aDiv, bDiv, cDiv, dDiv, timeDiv);
         answerSelected();
@@ -49,13 +51,14 @@ $(document).ready(function() {
         var imageDiv = $('<img src="' + questions[questionNumber].image + '" width="200px">');
         var timeDiv = $('<div id="time">Next question in... 5 seconds</div>');
         $(".cardDiv").append(feedbackDiv, imageDiv, timeDiv);
-        setTimeout(nextQuestion, 5000);
+        //setTimeout(nextQuestion, 5000);
     }
 
     function nextQuestion() {
         questionNumber++;
         timeRemaing = 10;
         timeFeedback = 5;
+        userGuess = "";
         displayQuestion();
     }
 
@@ -65,11 +68,10 @@ $(document).ready(function() {
     }
 
     function checkAnswer() {
-        userGuess = $(this).attr("id");
-        if (userGuess === questions[questionNumber].ansChar) {
+        if (userGuess = answerKey) {
             feedback = "Correct! The answer is " + questions[questionNumber].answer;
         }
-        // else if (userGuess = undefined) {
+        // else if (userGuess = "none") {
         //     feedback = "You didn't respond in time...the answer was " + questions[questionNumber].answer;
         // }
         else {
@@ -79,6 +81,9 @@ $(document).ready(function() {
 
     function answerSelected() {
         $(".choice").on("click", function() {
+            userGuess = $(this).attr("id");
+            console.log(userGuess);
+            console.log(answerKey);
             resetScreen();
             displayFeedback();
             checkAnswer();
@@ -99,7 +104,10 @@ $(document).ready(function() {
          timeRemaing--;
          $("#time").html('<div id="time">Time Remaining: ' + timeRemaing + ' seconds</div>');
          if (timeRemaing === 0) {
-             stop();
+            feedback = "You didn't respond in time...the answer was " + questions[questionNumber].answer;
+            stop();
+             resetScreen();
+             displayFeedback();
          }
      }
 
@@ -108,6 +116,8 @@ $(document).ready(function() {
          $("#time").html('<div id="time">Next question in... ' + timeFeedback + ' seconds</div>');
          if (timeFeedback === 0) {
              stop();
+             resetScreen();
+             nextQuestion();
          }
      }
 
@@ -124,9 +134,4 @@ $(document).ready(function() {
         initializeGame();
         displayQuestion();
     });
-
-    // runT();
-    // runF();
-
-    
 });
