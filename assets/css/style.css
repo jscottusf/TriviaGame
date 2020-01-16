@@ -12,7 +12,7 @@ body {
 }
 
 .game {
-    min-height: 500px;
+    min-height: 600px;
 }
 
 #title {
@@ -23,12 +23,13 @@ body {
     cursor: pointer;
     width: 300px;
     text-align: left;
-    margin-left: 220px;
-    padding: 5px;
+    margin-left: 300px;
+    padding: 10px;
 }
 
 .choice:hover {
     border-radius: 25px;
+    padding: 9px;
     border: 1px solid rgb(95, 94, 94);
     
   }
