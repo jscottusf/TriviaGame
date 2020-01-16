@@ -65,7 +65,7 @@ $(document).ready(function() {
         var cardDiv = $('<div class="cardDiv">');
         $("#game-window").append(cardDiv);
         var feedbackDiv = $('<h3>' + feedback + '</h3>');
-        var imageDiv = $('<img src="' + questions[questionNumber].image + '" width="500px">');
+        var imageDiv = $('<img id="image" src="' + questions[questionNumber].image + '" width="500px">');
         var infoDiv = $('<p>' + questions[questionNumber].fact + '</p>');
         var timeDiv = $('<h4 id="time">Next question in... 5 seconds</h4>');
         $(".cardDiv").append(feedbackDiv, imageDiv, infoDiv, timeDiv);
