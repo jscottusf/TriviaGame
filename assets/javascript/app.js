@@ -5,6 +5,7 @@ window.onload = function() {
 };
 
 $(document).ready(function() {
+    //main variables
     let questions = [
         {q: "What two countries were already involved in a military conflict before the beginning of World War II?", a: "Japan & India", b: "Germany & Poland", "c": "Germany & France", "d": "Japan  & China", ansChar: "d", answer: "Japan & China", fact :"Japan and China were already engaged in a military conflict before the outbreak of World War II. China was also involved in a civil war and spent most of World War II dealing with internal conflicts and repelling the advances of the Japanese.", image: "./assets/images/Q0japan.jpg"},
         {q:"In what year did Germany invade Poland?", a:"1938", b:"1939", c:"1940", d:"1941", ansChar:"b", answer:"the year 1939", fact:"In September 1939 Hitler invaded Poland, an act that resulted in both France and Great Britain declaring war on Germany.", image: "./assets/images/Q1-1939.jpg"},
@@ -33,9 +34,13 @@ $(document).ready(function() {
     let totalCorrect;
     let totalIncorrect;
 
+    //sounds
+    let correct = new Audio("./assets/sounds/correct.mp3");
+    let incorrect = new Audio("./assets/sounds/incorrect.wav");
+
     function initializeGame() {
         questionNumber = 0;
-        timeRemaing = 10;
+        timeRemaing = 30;
         timeFeedback = 5;
         totalCorrect = 0;
         totalIncorrect = 0;
@@ -52,15 +57,13 @@ $(document).ready(function() {
         var cDiv = $('<div class="choice" id="c">c. ' + questions[questionNumber].c + '</div><hr>');
         var dDiv = $('<div class="choice" id="d">d. ' + questions[questionNumber].d + '</div><hr>');
         answerKey = questions[questionNumber].ansChar;
-        var timeDiv = $('<h4 id="time">Time Remaining: 10 seconds</h3>');
+        var timeDiv = $('<h4 id="time">Time Remaining: 30 seconds</h3>');
         $(".cardDiv").append(qDiv, aDiv, bDiv, cDiv, dDiv, timeDiv);
         answerSelected();
     }
 
     function displayFeedback() {
         runF();
-        timeRemaing = 10;
-        timeFeedback = 5;
         resetScreen();
         var cardDiv = $('<div class="cardDiv">');
         $("#game-window").append(cardDiv);
@@ -93,7 +96,7 @@ $(document).ready(function() {
             displayGameOver();
         }
         else {
-            timeRemaing = 10;
+            timeRemaing = 30;
             timeFeedback = 5;
             userGuess = "";
             displayQuestion();
@@ -107,10 +110,12 @@ $(document).ready(function() {
             if (userGuess===answerKey) {
                 feedback = "Correct! The answer is " + questions[questionNumber].answer;
                 totalCorrect++;
+                correct.play();
             }
             else {
                 feedback = "Nope! The answer was " + questions[questionNumber].answer;
                 totalIncorrect++;
+                incorrect.play();
             }
             resetScreen();
             displayFeedback();
@@ -133,6 +138,7 @@ $(document).ready(function() {
         if (timeRemaing === 0) {
             feedback = "You didn't respond in time...the answer was " + questions[questionNumber].answer;
             totalIncorrect++;
+            incorrect.play();
             stop();
             resetScreen();
             displayFeedback();
