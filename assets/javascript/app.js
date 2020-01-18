@@ -40,7 +40,7 @@ $(document).ready(function() {
 
     function initializeGame() {
         questionNumber = 0;
-        timeRemaing = 30;
+        timeRemaing = 20;
         timeFeedback = 5;
         totalCorrect = 0;
         totalIncorrect = 0;
@@ -57,7 +57,7 @@ $(document).ready(function() {
         var cDiv = $('<div class="choice" id="c">c. ' + questions[questionNumber].c + '</div><hr>');
         var dDiv = $('<div class="choice" id="d">d. ' + questions[questionNumber].d + '</div><hr>');
         answerKey = questions[questionNumber].ansChar;
-        var timeDiv = $('<h4 id="time">Time Remaining: 30 seconds</h3>');
+        var timeDiv = $('<h4 id="time">Time Remaining: 20 seconds</h3>');
         $(".cardDiv").append(qDiv, aDiv, bDiv, cDiv, dDiv, timeDiv);
         answerSelected();
     }
@@ -96,7 +96,7 @@ $(document).ready(function() {
             displayGameOver();
         }
         else {
-            timeRemaing = 30;
+            timeRemaing = 20;
             timeFeedback = 5;
             userGuess = "";
             displayQuestion();
