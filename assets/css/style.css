@@ -23,6 +23,7 @@ body {
 }
 
 .choice {
+    font-size: 20px;
     cursor: pointer;
     width: 300px;
     text-align: left;

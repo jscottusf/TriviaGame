@@ -38,14 +38,16 @@ $(document).ready(function() {
     let correct = new Audio("./assets/sounds/correct.mp3");
     let incorrect = new Audio("./assets/sounds/incorrect.wav");
 
+    //set variable values to begin trivia quiz
     function initializeGame() {
         questionNumber = 0;
-        timeRemaing = 20;
-        timeFeedback = 5;
+        timeRemaing = 30;
+        timeFeedback = 10;
         totalCorrect = 0;
         totalIncorrect = 0;
     }
 
+    //display question car with choices
     function displayQuestion() {
         runT();
         resetScreen();
@@ -57,11 +59,12 @@ $(document).ready(function() {
         var cDiv = $('<div class="choice" id="c">c. ' + questions[questionNumber].c + '</div><hr>');
         var dDiv = $('<div class="choice" id="d">d. ' + questions[questionNumber].d + '</div><hr>');
         answerKey = questions[questionNumber].ansChar;
-        var timeDiv = $('<h4 id="time">Time Remaining: 20 seconds</h3>');
+        var timeDiv = $('<h4 id="time">Time Remaining: 30 seconds</h3>');
         $(".cardDiv").append(qDiv, aDiv, bDiv, cDiv, dDiv, timeDiv);
         answerSelected();
     }
 
+    //display feedback with picture and information
     function displayFeedback() {
         runF();
         resetScreen();
@@ -70,10 +73,11 @@ $(document).ready(function() {
         var feedbackDiv = $('<h3>' + feedback + '</h3>');
         var imageDiv = $('<img id="image" src="' + questions[questionNumber].image + '" width="500px">');
         var infoDiv = $('<p>' + questions[questionNumber].fact + '</p>');
-        var timeDiv = $('<h4 id="time">Next question in... 5 seconds</h4>');
+        var timeDiv = $('<h4 id="time">Next question in... 10 seconds</h4>');
         $(".cardDiv").append(feedbackDiv, imageDiv, infoDiv, timeDiv);
     }
 
+    //when questions remaining is 0, show correct and incorrect totals with game reset button
     function displayGameOver() {
         resetScreen();
         var cardDiv = $('<div class="cardDiv">');
@@ -90,20 +94,22 @@ $(document).ready(function() {
         });
     }
 
+    //increase question number value until all questions are gone, reset time variables
     function nextQuestion() {
         questionNumber++;
         if (questionNumber === questions.length) {
             displayGameOver();
         }
         else {
-            timeRemaing = 20;
-            timeFeedback = 5;
+            timeRemaing = 30;
+            timeFeedback = 10;
             userGuess = "";
             displayQuestion();
         }
         
     }
 
+    //when user clicks on answer choice, check if accurate, write feedback, and record total correct/incorrect
     function answerSelected() {
         $(".choice").on("click", function() {
             userGuess = $(this).attr("id");
@@ -122,16 +128,20 @@ $(document).ready(function() {
         });
     }
 
+    //run (T) TIME REMAINING of question card
     function runT() {
         clearInterval(intervalId);
         intervalId = setInterval(decRemainingTime, 1000);
     }
 
+    //run (F) FEEDBACK of feedback card
     function runF() {
         clearInterval(intervalId);
         intervalId = setInterval(decTimeFeedback, 1000);
     }
 
+    //decrament time remaining for runT()
+    //if 0, write feedback, increase total Incorrect, move on to feedback screen
     function decRemainingTime() {
         timeRemaing--;
         $("#time").html('<div id="time">Time Remaining: ' + timeRemaing + ' seconds</div>');
@@ -145,6 +155,7 @@ $(document).ready(function() {
         }
     }
 
+    //show feedback card until time is 0, move on to next question
     function decTimeFeedback() {
         timeFeedback--
         $("#time").html('<div id="time">Next question in... ' + timeFeedback + ' seconds</div>');
@@ -155,14 +166,17 @@ $(document).ready(function() {
         }
     }
 
+    //stop countdown clock
     function stop() {
         clearInterval(intervalId);
     }
 
+    //reset screeen between question and feedback cards
     function resetScreen() {
         $(".cardDiv").remove();
     };
 
+    //start game by clicking begin button
     $(".begin").on("click", function() {
         $(this).remove();
         initializeGame();
