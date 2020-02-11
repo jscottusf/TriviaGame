@@ -1,3 +1,11 @@
+html, body {
+    background-image: url("../images/wwii.jpg");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+}
+
 html {
     margin: 0;
     padding: 0;
@@ -9,9 +17,6 @@ body {
     margin: 0;
     padding: 0;
     margin-bottom: 60px; /* Margin bottom by footer height */
-    /* background-image: url("../images/wwii.jpg");
-    background-size: 100% 100%;
-    background-repeat: no-repeat; */
 }
 
 .game {
@@ -57,3 +62,4 @@ body {
     background-color: #f5f5f5;
     text-align: center;
   }
+  
