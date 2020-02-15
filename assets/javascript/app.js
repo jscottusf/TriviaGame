@@ -1,9 +1,3 @@
-window.onload = function() {
-    var startButton = $('<button type="button" class="begin btn btn-dark">Begin</button>')
-    $("#game-window").append(startButton);
-    $(".bg-dark").attr("style", "background-image: url('./assets/images/wwii.jpg');")
-};
-
 $(document).ready(function() {
     //main variables
     let questions = [
@@ -87,7 +81,7 @@ $(document).ready(function() {
         var totalCorrectDiv = $('<h2> Total correct: ' + totalCorrect + '</h2>')
         var totalIncorrectDiv = $('<h2> Total incorrect: ' + totalIncorrect + '</h2>');
         $(".cardDiv").append(gameOverDiv, totalCorrectDiv, totalIncorrectDiv, restartButton);
-        $(".restart").on("click", function() {
+        $("body").on("click", ".restart", function() {
             resetScreen();
             initializeGame();
             displayQuestion();
@@ -111,7 +105,7 @@ $(document).ready(function() {
 
     //when user clicks on answer choice, check if accurate, write feedback, and record total correct/incorrect
     function answerSelected() {
-        $(".choice").on("click", function() {
+        $("body").on("click", ".choice",  function() {
             userGuess = $(this).attr("id");
             if (userGuess===answerKey) {
                 feedback = "Correct! The answer is " + questions[questionNumber].answer;
@@ -183,3 +177,4 @@ $(document).ready(function() {
         displayQuestion();
     });
 });
+
